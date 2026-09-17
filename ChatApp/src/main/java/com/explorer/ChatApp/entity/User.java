@@ -1,5 +1,6 @@
 package com.explorer.ChatApp.entity;
 
+import com.explorer.ChatApp.enums.UserStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -29,7 +30,10 @@ public class User {
     @Column(name = "password_hash", nullable = false)
     private String passwordHash;
     private String profileImageUrl;
-    private String status;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private UserStatus status;
     private Instant lastSeen;
 
     @Column(name = "created_at")
