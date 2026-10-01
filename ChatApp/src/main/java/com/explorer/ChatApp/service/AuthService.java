@@ -36,21 +36,18 @@ public class AuthService {
         //Normalize email
         email = normalizeEmail(email);
 
-        System.out.println("23: register: "+name + " " + email +" "+password);
         if(userRepository.existsByEmail(email)) {
             throw new IllegalStateException("User with this email already exists");
         }
 
         String passwordHash = passwordEncoder.encode(password);
 
-        System.out.println("30: "+password);
         User user = new User();
         user.setName(name);
         user.setEmail(email);
         user.setPasswordHash(passwordHash);
         user.setStatus(UserStatus.OFFLINE);
 
-        System.out.println("37: user: "+ user);
         return userRepository.save(user);
     }
 
@@ -74,7 +71,6 @@ public class AuthService {
 
         user.setStatus(UserStatus.ONLINE);
         user.setLastSeen(null);
-        System.out.println("User: " + user.toString());
         userRepository.save(user);
 
         return jwtService.generateToken(user);
