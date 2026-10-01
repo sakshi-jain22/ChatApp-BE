@@ -55,4 +55,19 @@ public class User {
     protected void onUpdate() {
         updatedAt = Instant.now();
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", passwordHash='" + passwordHash + '\'' +
+                ", profileImageUrl='" + profileImageUrl + '\'' +
+                ", status=" + status +
+                ", lastSeen=" + lastSeen +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                '}';
+    }
 }

@@ -4,8 +4,12 @@ import com.explorer.ChatApp.entity.Chat;
 import com.explorer.ChatApp.entity.Message;
 import com.explorer.ChatApp.entity.User;
 import com.explorer.ChatApp.enums.MessageStatus;
+import com.explorer.ChatApp.enums.MessageType;
+import com.explorer.ChatApp.exception.ResourceNotFoundException;
 import com.explorer.ChatApp.repository.ChatParticipantRepository;
+import com.explorer.ChatApp.repository.ChatRepository;
 import com.explorer.ChatApp.repository.MessageRepository;
+import com.explorer.ChatApp.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
@@ -19,20 +23,27 @@ public class MessageService {
 
         private final MessageRepository messageRepository;
         private final ChatParticipantRepository chatParticipantRepository;
+        private final ChatRepository chatRepository;
+        private final UserRepository userRepository;
 
         /**
          * Send/save a new message.
          */
+        @Transactional
         public Message sendMessage(
-                        Chat chat,
-                        User sender,
-                        String content) {
+                        Long chatId,
+                        String senderEmail,
+                        String content
+        ) {
+                Chat chat = chatRepository.findById(chatId).orElseThrow(()->new ResourceNotFoundException("Chat", "id", chatId));
+                User sender = userRepository.findByEmail(senderEmail).orElseThrow(()->new ResourceNotFoundException("User","email", senderEmail));
 
                 // Make sure the sender belongs to this chat
                 boolean isParticipant = chatParticipantRepository
                                 .existsByChatIdAndUserId(
-                                                chat.getId(),
-                                                sender.getId());
+                                                chatId,
+                                                sender.getId()
+                                );
 
                 if (!isParticipant) {
                         throw new IllegalStateException(
@@ -44,6 +55,7 @@ public class MessageService {
                                 .chat(chat)
                                 .sender(sender)
                                 .content(content)
+                                .messageType(MessageType.TEXT) // Default value
                                 .status(MessageStatus.SENT) // Default value
                                 .build();
 

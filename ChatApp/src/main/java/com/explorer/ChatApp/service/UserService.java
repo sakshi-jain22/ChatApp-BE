@@ -2,6 +2,7 @@ package com.explorer.ChatApp.service;
 
 import com.explorer.ChatApp.entity.User;
 import com.explorer.ChatApp.enums.UserStatus;
+import com.explorer.ChatApp.exception.ResourceNotFoundException;
 import com.explorer.ChatApp.repository.UserRepository;
 
 import lombok.AllArgsConstructor;
@@ -36,12 +37,12 @@ public class UserService {
     @Transactional(readOnly = true)
     public User getUserById(Long userId) {
         return userRepository.findById(userId)
-                .orElseThrow(()->new RuntimeException("User not found"));
+                .orElseThrow(()->new ResourceNotFoundException("User", "id", userId));
     }
 
     @Transactional(readOnly = true)
     public User getUserByEmail(String email) {
-        return userRepository.findByEmail(email).orElseThrow(()->new RuntimeException("User not found"));
+        return userRepository.findByEmail(email).orElseThrow(()->new ResourceNotFoundException("User", "email", email));
     }
 
     @Transactional(readOnly = true)
@@ -71,9 +72,13 @@ public class UserService {
 
     public void deleteUser(Long userId) {
         if(!userRepository.existsById(userId)) {
-            throw new RuntimeException("User not found");
+            throw new ResourceNotFoundException("User", "id", userId);
         }
 
         userRepository.deleteById(userId);
+    }
+
+    public User saveUser(User user) {
+        return userRepository.save(user);
     }
 }

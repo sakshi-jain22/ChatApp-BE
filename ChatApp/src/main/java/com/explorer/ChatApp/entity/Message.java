@@ -3,9 +3,7 @@ package com.explorer.ChatApp.entity;
 import com.explorer.ChatApp.enums.MessageStatus;
 import com.explorer.ChatApp.enums.MessageType;
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -14,6 +12,8 @@ import java.time.Instant;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Component
 @Scope("prototype")
 @Builder 

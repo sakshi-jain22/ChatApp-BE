@@ -1,5 +1,6 @@
 package com.explorer.ChatApp.entity;
 
+import com.explorer.ChatApp.enums.ChatType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,7 +22,8 @@ public class Chat {
     private Long id;
 
     @Column
-    private String type;
+    @Enumerated(EnumType.STRING)
+    private ChatType type;
 
     @Column
     private String name;

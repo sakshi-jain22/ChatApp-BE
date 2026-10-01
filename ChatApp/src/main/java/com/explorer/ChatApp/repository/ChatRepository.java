@@ -9,7 +9,8 @@ import com.explorer.ChatApp.entity.Chat;
 
 @Repository
 public interface ChatRepository extends JpaRepository<Chat, Long> {
-    boolean existsByIdAndIsGroupChatTrue(Long chatId);
+//    boolean existsByIdAndIsGroupChatTrue(Long chatId);
 
-    Page<Chat> findByIsGroupChatTrueAndNameContainingIgnoreCase(String name, Pageable pageable);
+//    Page<Chat> findByIsGroupChatTrueAndNameContainingIgnoreCase(String name, Pageable pageable);
+    Chat getChatById(Long chatId);
 }
